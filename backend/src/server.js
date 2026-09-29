@@ -50,7 +50,17 @@ const io = new Server(server, {
 });
 
 // ── MIDDLEWARE ──────────────────────────────────────────────
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  // Allow Vercel frontend to embed PDFs in iframes
+  frameguard: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      frameAncestors: ["'self'", ...allowedOrigins],
+    },
+  },
+}));
 app.use(cors({
   origin: allowedOrigins,
 }));
