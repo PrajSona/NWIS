@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+    "generate-pdfs": "node src/generate-pdfs.js",
+    "build": "node src/generate-pdfs.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

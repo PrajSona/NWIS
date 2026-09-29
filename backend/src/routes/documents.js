@@ -179,7 +179,24 @@ router.get('/:id/file', async (req, res) => {
     const doc = await Document.findById(req.params.id);
     if (!doc) return res.status(404).json({ error: true, message: 'Document not found' });
 
-    const filePath = path.resolve(doc.filePath);
+    // Try the stored filePath first
+    let filePath = path.resolve(doc.filePath);
+    
+    // If not found, search by filename in uploads directory (handles cross-platform deployment)
+    if (!fs.existsSync(filePath)) {
+      const searchDirs = [
+        uploadsDir,
+        path.join(uploadsDir, 'system'),
+      ];
+      for (const dir of searchDirs) {
+        const candidate = path.join(dir, doc.filename);
+        if (fs.existsSync(candidate)) {
+          filePath = candidate;
+          break;
+        }
+      }
+    }
+
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({ error: true, message: 'File not found on disk' });
     }
