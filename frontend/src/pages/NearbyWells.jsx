@@ -200,7 +200,8 @@ export default function NearbyWells() {
   if (viewingDoc) {
     const docInfo = viewingDoc.document || viewingDoc;
     const pages = viewingDoc.pages || [];
-    const pdfUrl = `/api/documents/${docInfo._id}/file`;
+    const apiBase = import.meta.env.VITE_API_URL || '/api';
+    const pdfUrl = `${apiBase}/documents/${docInfo._id}/file`;
     const analysisResults = analyzed ? pages.map(p => analyzeText(p.extractedText || p.ocrText || '')) : [];
     const totalStats = {};
     if (analyzed) {

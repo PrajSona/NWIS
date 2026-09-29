@@ -96,7 +96,8 @@ export default function HistoricalEvents() {
 
   // ── PDF Viewer Overlay ──
   if (viewingPdf) {
-    const pdfUrl = `/api/documents/${viewingPdf.docId}/file`;
+    const apiBase = import.meta.env.VITE_API_URL || '/api';
+    const pdfUrl = `${apiBase}/documents/${viewingPdf.docId}/file`;
     const pages = viewingPdf.pages;
     const analysisResults = analyzed ? pages.map(p => analyzeText(p.extractedText || p.ocrText || '')) : [];
     const totalStats = {};

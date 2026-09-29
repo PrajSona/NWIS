@@ -81,7 +81,8 @@ export default function Documents() {
 
   // ── PDF Viewer (when a document is selected) ──
   if (selectedDoc) {
-    const pdfUrl = `/api/documents/${selectedDoc._id}/file`;
+    const apiBase = import.meta.env.VITE_API_URL || '/api';
+    const pdfUrl = `${apiBase}/documents/${selectedDoc._id}/file`;
     const pages = docDetail?.pages || [];
     const analysisResults = analyzed ? pages.map(p => analyzeText(p.extractedText || p.ocrText || '')) : [];
     const totalStats = {};
